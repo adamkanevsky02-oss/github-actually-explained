@@ -14,18 +14,11 @@ Not a video, not a list of commands. A working fake GitHub you can click through
 
 ## Why it exists
 
-Most GitHub tutorials teach you *which buttons to press*. You follow along, it works,
-and you still have no idea what happened — so the next unfamiliar screen puts you right
-back where you started.
+It gives beginners a visual walkthrough the github interface, while also explaining all of the use cases of the web app. Ensuring that anyone who uses the guide, can navigate the platform, and use it in their everyday life. 
 
-This one is built on a different rule: **never state what something is without also
-answering why it exists, what breaks if you ignore it, and when you would actually
-reach for it.** Every hotspot answers five questions:
+Every hotspot answers five questions:
 
 > **What it is** · **Why it exists** · **How you use it** · **What goes wrong** · **When you'd reach for it**
-
-That is not a style guideline, it is a build constraint. `assemble.js` refuses to
-produce output if a single hotspot is missing one of the five.
 
 ## What's inside
 
@@ -73,28 +66,6 @@ an idealised one.
 - A **guided walker** steps through hotspots in reading order, or free-roam them
 - Arrow keys move between hotspots, <kbd>Esc</kbd> closes, progress persists in `localStorage`
 
-## Build
-
-Modules are plain data objects; the engine renders them. No framework, no bundler, no
-`package.json`.
-
-```bash
-node build/assemble.js     # regenerate index.html
-node build/fix-tabs.js     # normalise every replica tab bar (idempotent)
-```
-
-### The quality gate
-
-`assemble.js` runs every module in a sandbox and **refuses to write a build** on any of:
-
-- a hotspot missing any of its five explanation fields
-- banned filler phrasing (`simply`, `as you can see`, `obviously`, …)
-- a screen referencing a view that doesn't exist
-- a duplicate or misnumbered module
-- **anything that would reach the network** — no CDN, no fonts, no images, no `fetch`
-
-Every icon is inline SVG, every avatar a generated identicon. The single output file is
-the entire application.
 
 ## Tech
 
