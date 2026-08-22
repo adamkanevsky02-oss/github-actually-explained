@@ -1,90 +1,59 @@
-# GitHub, Actually Explained
+# GitHub, Actually Explained — working copy
 
-**[▶ Open the tutorial](https://jordan-lee.github.io/github-actually-explained/)**
+This folder is the **private, authored source**. It teaches from your real repo
+(`jordan-lee/trading-journal-practice`) including your actual README, your answers
+and your other repositories.
 
-An interactive, hands-on tutorial that teaches GitHub by rebuilding its interface as a
-clickable replica — then explaining every part of it.
+**Nothing in this folder is published.** It is not a git repository.
 
-Not a video. Not a list of commands. A working fake GitHub you can click through,
-with 222 numbered hotspots pinned to real interface elements.
+## The two builds
 
-<sub>One self-contained HTML file · no build step · no dependencies · no network requests · works offline</sub>
+| | Command | Output | Contains your data? |
+|---|---|---|---|
+| **Yours** | `node build/assemble.js` | `index.html` (here) | Yes — that's the point |
+| **Public** | `node build/publish.js` | `../github-tutorial-public/` | No — audited clean |
 
----
-
-## Why it exists
-
-Most GitHub tutorials teach you *which buttons to press*. You follow along, it works,
-and you still have no idea what happened. I'd used GitHub for a while exactly like
-that — clicking things that worked without understanding why.
-
-So this one is built on a different rule: **never state what something is without also
-answering why it exists, what breaks if you ignore it, and when you'd actually reach
-for it.** Every single hotspot answers those five questions. That constraint is
-enforced by the build — see [Quality gate](#quality-gate) below.
-
-## What's inside
-
-Ten modules, ~60,000 words, 21 clickable screens, 222 hotspots.
-
-| # | Module | |
-|---|--------|---|
-| 1 | What Git and GitHub actually are | The distinction most beginners never get told |
-| 2 | Anatomy of a repository page | Every element of a repo page — 35 hotspots |
-| 3 | Files, READMEs and your first change | Markdown from zero, and the full edit → commit loop |
-| 4 | Commits: the save points that never disappear | Reading history, SHAs, and how to read a diff |
-| 5 | Branches | Working without breaking anything |
-| 6 | Pull requests | Why the name is confusing, and what a PR really is |
-| 7 | Issues | The to-do list that lives with the project |
-| 8 | Finding things | Search qualifiers, the dashboard, reading a GitHub URL |
-| 9 | Settings and visibility | Private vs public, and not leaking secrets |
-| 10 | Beyond the basics | Pages, Actions, portfolios, collaboration, open source |
-
-## The interesting design decision
-
-It teaches from **one real repository, with real mistakes in it** — a genuine first-week
-practice repo, defects included, rather than a sanitised example.
-
-The best of those: a file committed as `journal\week6.md`. A Windows-style backslash
-typed into GitHub's filename box, which produces *one file with a backslash in its name*
-rather than a `journal/` folder. GitHub only builds folders from a forward slash. It's
-invisible until you know to look, it's a mistake thousands of people make, and no
-tutorial covers it because no tutorial uses a repo that actually contains it.
-
-Teaching from real defects means the reader recognises the situation instead of
-watching an idealised one.
-
-## Interaction model
-
-- Screens are **genuinely clickable** — tabs switch views, dropdowns open, diffs expand
-- Actions that would hit the network **simulate their result instead**: merge a pull
-  request and the state pill goes purple, the timeline updates, and a panel explains
-  exactly what moved where
-- A **guided walker** steps through hotspots in reading order, or free-roam
-- Arrow keys move between hotspots, <kbd>Esc</kbd> closes; progress persists in `localStorage`
-
-## Build
-
-Source lives in `build/`. Modules are plain data objects; the engine renders them.
+Open **`index.html`** to use the tutorial. It's built around your repo, which is what
+makes it click — you recognise every screen.
 
 ```bash
-node build/assemble.js     # regenerates index.html
-node build/fix-tabs.js     # re-normalises every replica tab bar (idempotent)
+open -a "Google Chrome" index.html
 ```
 
-### Quality gate
+## The published version
 
-`assemble.js` refuses to produce a build on any of:
+Live: <https://adamkanevsky02-oss.github.io/github-actually-explained/>
+Repo: <https://github.com/adamkanevsky02-oss/github-actually-explained>
 
-- a hotspot missing any of its five explanation fields
-- banned filler phrasing (`simply`, `as you can see`, `obviously`, …)
-- a screen referencing a view that doesn't exist
-- **anything that would reach the network** — no CDN, no fonts, no images, no `fetch`
+`build/publish.js` regenerates it: it runs every published file through
+`build/generic-map.js` (which maps your identity onto a fictional persona,
+`jordan-lee` / `trading-journal-practice`), rebuilds `index.html` in the public tree,
+then **audits every published byte** and refuses to finish if a single personal token
+survives.
 
-Every icon is inline SVG; every avatar is a generated identicon. The 890 KB output
-file is the entire application.
+All five teaching moments survive the transform intact — the `journal\week6.md`
+backslash, the leftover template placeholders, the run-together degree line, the
+`correletaed` typo and the Private-repo lesson.
 
-## Tech
+To update the live site:
 
-Vanilla HTML, CSS and JavaScript. No framework, no bundler, no package.json.
-Dark theme built to match GitHub's own tokens so the replica reads as the real thing.
+```bash
+node build/publish.js
+cd ../github-tutorial-public && git add -A && git commit -m "..." && git push
+```
+
+### Never published
+
+`BRIEF.md`, `QA-LOG.md` and `generic-map.js` are excluded by `publish.js` — the first
+two are written about you specifically, and the third contains the entire
+personal-to-generic mapping, which is to say all of your data in one file.
+
+## Build files
+
+- `build/shell.html` — GitHub-dark replica CSS, 52 Octicons, the tutorial engine
+- `build/modules/NN-*.js` — one file per module, plain data objects
+- `build/assemble.js` — builds + enforces the quality gate
+- `build/fix-tabs.js` — normalises every replica tab bar (idempotent)
+- `build/BRIEF.md` — the spec everything was written against
+- `build/SCHEMA.md` — the module authoring API
+- `build/QA-LOG.md` — what was verified in a browser, and what was fixed
